@@ -15,6 +15,27 @@ name = "nltkjsonnlp"
 
 __version__ = "0.0.1"
 
+import json, logging, functools
+import jsonnlp 
+from collections import OrderedDict, Counter, defaultdict
+import functools
+import os
+from os.path import join
+import nltk
+from typing import List, Tuple
+from nltk import __version__, PunktSentenceTokenizer, TreebankWordTokenizer, PorterStemmer, tagset_mapping, ne_chunk, pos_tag
+from nltk.chunk import tree2conlltags
+from nltk.corpus import wordnet
+from nltk.corpus import verbnet as vn
+from nltk.parse import malt
+from nltk.stem.wordnet import WordNetLemmatizer
+from nltk.tokenize import WordPunctTokenizer
+from nltk.tokenize.api import TokenizerI
+from langdetect import detect
+from jsonnlp import base_nlp_json, base_document
+import pycountry
+
+
 
 def cache_it(func):
     """A decorator to cache function response based on params. Add it to top of function as @cache_it."""
