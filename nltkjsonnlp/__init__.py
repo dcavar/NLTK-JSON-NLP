@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-(C) 2019 Damir Cavar, Oren Baldinger, Maanvitha Gongalla, Anurag Kumar, Murali Kammili
+(C) 2019 Damir Cavar, Oren Baldinger, Maanvitha Gongalla, Anurag Kumar, Murali Kammili, Boli Fang
 
 Wrappers for NLTK to JSON-NLP output format.
 

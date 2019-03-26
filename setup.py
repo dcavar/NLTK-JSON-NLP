@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name="nltkjsonnlp",
     version="0.0.1",
-    author="Damir Cavar, Oren Baldinger, Maanvitha Gongalla, Anurag Kumar, Murali Kammili",
+    author="Damir Cavar, Oren Baldinger, Maanvitha Gongalla, Anurag Kumar, Murali Kammili, Boli Fang",
     author_email="damir@cavar.me",
     description="The Python NLTK JSON-NLP package",
     long_description=long_description,
