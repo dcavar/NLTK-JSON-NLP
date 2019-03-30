@@ -53,6 +53,7 @@ def cache_it(func):
 
 @cache_it
 def get_wordnet_pos(penn_tag: str) -> str:
+    """ """
     # https://stackoverflow.com/questions/15586721/wordnet-lemmatization-and-pos-tagging-in-python
     if penn_tag.startswith('J'):
         return wordnet.ADJ
@@ -65,6 +66,7 @@ def get_wordnet_pos(penn_tag: str) -> str:
 
 @cache_it
 def get_sentence_tokenizer():
+    """ """
     # https://textminingonline.com/dive-into-nltk-part-ii-sentence-tokenize-and-word-tokenize
     return PunktSentenceTokenizer()
 
@@ -72,6 +74,7 @@ def get_sentence_tokenizer():
 @cache_it
 # def get_tokenizer(model: str) -> TokenizerI:
 def get_tokenizer(params: dict):
+    """ """
     model = params.get('tokenizer', '').lower()
     if model == 'punkt':
         return WordPunctTokenizer()
@@ -81,17 +84,20 @@ def get_tokenizer(params: dict):
 
 @cache_it
 def get_lemmatizer():
+    """ """
     # https://textminingonline.com/dive-into-nltk-part-iv-stemming-and-lemmatization
     return WordNetLemmatizer().lemmatize
 
 @cache_it
 def get_stemmer():
+    """ """
     # https://textminingonline.com/dive-into-nltk-part-iv-stemming-and-lemmatization
     return PorterStemmer().stem
 
 
 @cache_it
 def get_tag_mapper(lang: str) -> dict:
+    """ """
     # https://stackoverflow.com/questions/44117664/how-to-reduce-the-number-of-pos-tags-in-penn-treebank-nltk-python
     if lang == 'en':
         return tagset_mapping('en-ptb', 'universal')
@@ -99,6 +105,7 @@ def get_tag_mapper(lang: str) -> dict:
 
 @cache_it
 def get_parser():
+    """ """
     try:
         malt_path = os.environ['MALT_PATH']
         model_path = os.environ['MODEL_PATH']
@@ -206,7 +213,7 @@ def process(text: str, params: dict) -> OrderedDict:
     # check whether MALT parser is loaded! DC
     if parser:
         for sent_idx, sent in enumerate(zip(sentence_tokens, sentence_texts)):
-        	# Detecting language of each sentence
+            # Detecting language of each sentence
             la = pycountry.languages.get(alpha_2=detect(sent[1]))  
             token_to = token_from + len(sent[0]) - 1
             dg = parser.parse_one(sent[1].split())
