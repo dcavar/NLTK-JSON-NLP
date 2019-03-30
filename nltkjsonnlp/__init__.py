@@ -268,3 +268,4 @@ def process(text: str, params: dict) -> OrderedDict:
     # 2. fields: token: sentiment, embeddings; sentence: sentiment, complex, type, embeddings
 
     return j
+
