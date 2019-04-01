@@ -51,9 +51,11 @@ def cache_it(func):
         return __cache[f_name][s]
     return cached
 
-@cache_it
+
+#@cache_it
 def get_wordnet_pos(penn_tag: str) -> str:
-    # https://stackoverflow.com/questions/15586721/wordnet-lemmatization-and-pos-tagging-in-python
+    """Returns the Penn tag as a WordNet tag."""
+
     if penn_tag.startswith('J'):
         return wordnet.ADJ
     elif penn_tag.startswith('V'):
@@ -65,13 +67,16 @@ def get_wordnet_pos(penn_tag: str) -> str:
 
 @cache_it
 def get_sentence_tokenizer():
-    # https://textminingonline.com/dive-into-nltk-part-ii-sentence-tokenize-and-word-tokenize
+    """Returns the sentence tokenizer. This function cashes the sentencer object."""
+
     return PunktSentenceTokenizer()
 
 
 @cache_it
 # def get_tokenizer(model: str) -> TokenizerI:
 def get_tokenizer(params: dict):
+    """Returns the Treebank Word Tokenizer."""
+
     model = params.get('tokenizer', '').lower()
     if model == 'punkt':
         return WordPunctTokenizer()
@@ -79,26 +84,34 @@ def get_tokenizer(params: dict):
         raise ModuleNotFoundError(f'No such tokenizer {model}!')
     return TreebankWordTokenizer()
 
+
 @cache_it
 def get_lemmatizer():
-    # https://textminingonline.com/dive-into-nltk-part-iv-stemming-and-lemmatization
+    """Return the WordNet Lemmatizer. This function cashes the lemmatizer object."""
+
     return WordNetLemmatizer().lemmatize
+
 
 @cache_it
 def get_stemmer():
+    """ """
     # https://textminingonline.com/dive-into-nltk-part-iv-stemming-and-lemmatization
     return PorterStemmer().stem
 
 
 @cache_it
 def get_tag_mapper(lang: str) -> dict:
-    # https://stackoverflow.com/questions/44117664/how-to-reduce-the-number-of-pos-tags-in-penn-treebank-nltk-python
+    """ """
+
     if lang == 'en':
         return tagset_mapping('en-ptb', 'universal')
     return {}
 
+
 @cache_it
 def get_parser():
+    """Returns the MaltParser object.  This function cashes the object."""
+
     try:
         malt_path = os.environ['MALT_PATH']
         model_path = os.environ['MODEL_PATH']
@@ -109,7 +122,7 @@ def get_parser():
 
 
 def process(text: str, params: dict) -> OrderedDict:
-    """Process provided text"""
+    """This function is the main process function that processes the entire text."""
 
     # set JSON-NLP
     j: OrderedDict = base_document()
@@ -206,7 +219,7 @@ def process(text: str, params: dict) -> OrderedDict:
     # check whether MALT parser is loaded! DC
     if parser:
         for sent_idx, sent in enumerate(zip(sentence_tokens, sentence_texts)):
-        	# Detecting language of each sentence
+            # Detecting language of each sentence
             la = pycountry.languages.get(alpha_2=detect(sent[1]))  
             token_to = token_from + len(sent[0]) - 1
             dg = parser.parse_one(sent[1].split())
@@ -255,3 +268,4 @@ def process(text: str, params: dict) -> OrderedDict:
     # 2. fields: token: sentiment, embeddings; sentence: sentiment, complex, type, embeddings
 
     return j
+
