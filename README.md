@@ -1,6 +1,6 @@
 # NLTK-JSON-NLP
 
-(C) 2019 by [Damir Cavar], Oren Baldinger, Maanvitha Gongalla, Anurag Kumar, Murali Kammili, Boli Fang
+(C) 2019 by [Damir Cavar], [Oren Baldinger], Maanvitha Gongalla, Anurag Kumar, Murali Kammili, Boli Fang
 
 Brought to you by the [NLP-Lab.org]!
 
@@ -15,6 +15,7 @@ Brought to you by the [NLP-Lab.org]!
 
 
 [Damir Cavar]: http://damir.cavar.me/ "Damir Cavar"
+[Oren Baldinger]: https://oren.baldinger.me/ "Oren Baldinger"
 [NLP-Lab.org]: http://nlp-lab.org/ "NLP-Lab.org"
 [JSON-NLP]: https://github.com/dcavar/JSON-NLP "JSON-NLP"
 [Flair]: https://github.com/zalandoresearch/flair "Flair"
