@@ -20,7 +20,7 @@ from pyjsonnlp import get_base, get_base_document, remove_empty_fields
 from pyjsonnlp.pipeline import Pipeline
 from pyjsonnlp.tokenization import segment
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 name = "nltkjsonnlp"
 __cache = {}
 
@@ -103,68 +103,77 @@ class NltkPipeline(Pipeline):
             t_id += 1
 
             # wordnet
-            synsets = wordnet.synsets(lemma, pos=wordnet_pos)
-            senses = {}
-            for s in synsets:
-                hyponyms = [y for x in s.hyponyms() for y in x.lemma_names()]
-                hypernyms = [y for x in s.hypernyms() for y in x.lemma_names()]
-                synonyms = s.lemma_names()[1:]
-                examples = s.examples()
-                sense = {
-                    'wordnetId': s.name(),
-                    'definition': s.definition()
-                }
-                if synonyms:
-                    sense['synonyms'] = synonyms
-                if hypernyms:
-                    sense['hypernyms'] = hypernyms
-                if hyponyms:
-                    sense['hyponyms'] = hyponyms
-                if examples:
-                    sense['examples'] = examples
+            try:
+                synsets = wordnet.synsets(lemma, pos=wordnet_pos)
+                senses = {}
+                for s in synsets:
+                    hyponyms = [y for x in s.hyponyms() for y in x.lemma_names()]
+                    hypernyms = [y for x in s.hypernyms() for y in x.lemma_names()]
+                    synonyms = s.lemma_names()[1:]
+                    examples = s.examples()
+                    sense = {
+                        'wordnetId': s.name(),
+                        'definition': s.definition()
+                    }
+                    if synonyms:
+                        sense['synonyms'] = synonyms
+                    if hypernyms:
+                        sense['hypernyms'] = hypernyms
+                    if hyponyms:
+                        sense['hyponyms'] = hyponyms
+                    if examples:
+                        sense['examples'] = examples
 
-                antonyms = []
-                for l in s.lemmas():
-                    if l.antonyms():
-                        for a in l.antonyms():
-                            antonyms.append(a.name())
-                if antonyms:
-                    sense['antonyms'] = antonyms
+                    antonyms = []
+                    for l in s.lemmas():
+                        if l.antonyms():
+                            for a in l.antonyms():
+                                antonyms.append(a.name())
+                    if antonyms:
+                        sense['antonyms'] = antonyms
 
-                senses[sense['wordnetId']] = sense
+                    senses[sense['wordnetId']] = sense
 
-            if senses:
-                t['synsets'] = senses
+                if senses:
+                    t['synsets'] = senses
+            except:
+                pass
 
             # verbnet
-            verbs = dict((class_id, {'classId': class_id, 'frames': vn.frames(class_id)})
-                         for class_id in vn.classids(word))
+            try:
+                verbs = dict((class_id, {'classId': class_id, 'frames': vn.frames(class_id)})
+                             for class_id in vn.classids(word))
 
-            if verbs:
-                t['verbFrames'] = verbs
+                if verbs:
+                    t['verbFrames'] = verbs
+            except:
+                pass
 
             # framenet
-            frame_net = {}
-            frames = invoke_frame(word)
-            if frames is not None:
-                for fr in frames:
-                    lu_temp = []
-                    for lu in fn.lus(r'(?i)' + word.lower()):
-                        fr_ = fn.frames_by_lemma(r'(?i)' + lu.name)
-                        if len(fr_):
-                            if fr_[0] == fr:
-                                lu_temp.append({'name': lu.name,
-                                                'definition': lu.definition,
-                                                'pos': lu.name.split('.')[1]})
-                    frame_net[fr.ID] = {
-                        'name': fr.name,
-                        'frameId': fr.ID,
-                        'definition': fr.definition,
-                        # 'relations':fr.frameRelations,
-                        'lu': lu_temp
-                    }
-            if frame_net:
-                t['frames'] = frame_net
+            try:
+                frame_net = {}
+                frames = invoke_frame(word)
+                if frames is not None:
+                    for fr in frames:
+                        lu_temp = []
+                        for lu in fn.lus(r'(?i)' + word.lower()):
+                            fr_ = fn.frames_by_lemma(r'(?i)' + lu.name)
+                            if len(fr_):
+                                if fr_[0] == fr:
+                                    lu_temp.append({'name': lu.name,
+                                                    'definition': lu.definition,
+                                                    'pos': lu.name.split('.')[1]})
+                        frame_net[fr.ID] = {
+                            'name': fr.name,
+                            'frameId': fr.ID,
+                            'definition': fr.definition,
+                            # 'relations':fr.frameRelations,
+                            'lu': lu_temp
+                        }
+                if frame_net:
+                    t['frames'] = frame_net
+            except:
+                pass
 
         return remove_empty_fields(j)
 
