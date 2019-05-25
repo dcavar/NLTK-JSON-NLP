@@ -99,7 +99,8 @@ class NltkPipeline(Pipeline):
                 'text': word,
                 'stem': stemmer(word)
             }
-            d['tokenList'][t['id']] = t
+            #d['tokenList'][t['id']] = t
+            d['tokenList'].append(t)
             t_id += 1
 
             # wordnet
