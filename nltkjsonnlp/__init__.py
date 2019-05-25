@@ -20,7 +20,7 @@ from pyjsonnlp import get_base, get_base_document, remove_empty_fields
 from pyjsonnlp.pipeline import Pipeline
 from pyjsonnlp.tokenization import segment
 
-__version__ = "0.0.3"
+__version__ = "0.0.5"
 name = "nltkjsonnlp"
 __cache = {}
 
@@ -72,7 +72,8 @@ class NltkPipeline(Pipeline):
         j: OrderedDict = get_base()
         j['meta']['DC.language'] = lang
         d: OrderedDict = get_base_document(1)
-        j['documents'][d['id']] = d
+        #j['documents'][d['id']] = d
+        j['documents'].append(d)
         d['meta']['DC.source'] = 'NLTK {}'.format(nltk_version)
         j['meta']['DC.language'] = lang
         d['text'] = text
